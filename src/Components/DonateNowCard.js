@@ -4,34 +4,11 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import HorizontalLabelPositionBelowStepper from './Stepper'
 import './CardC.css'
 import AmountValueDetail from './AmountValueDetail';
 import ConfirmPayment from './ConfirmPayment';
 import PaymentForm from './AddPaymentInformation'
-
-
-
-
-
-function getStepContent(stepIndex) {
-    switch (stepIndex) {
-        case 0:
-            return 'Confirm Information';
-        case 1:
-            return 'Add Payment Information';
-        case 2:
-            return 'Confirm Payment';
-        case 3:
-            return 'Success';
-        default:
-            return 'Unknown stepIndex';
-    }
-}
-
-
-
 
 class DonateNowCard extends Component {
 
@@ -44,7 +21,8 @@ class DonateNowCard extends Component {
             expiry: '',
             focus: '',
             name: '',
-            number: ''
+            number: '',
+            amount: ''
 
 
         }
@@ -81,7 +59,6 @@ class DonateNowCard extends Component {
     // Handle Field change
     handleInputChange = (e) => {
         const { name, value } = e.target;
-
         this.setState({ [name]: value });
     }
     handleInputFocus = (e) => {
@@ -94,13 +71,15 @@ class DonateNowCard extends Component {
             expiry,
             focus,
             name,
-            number } = this.state
+            number,
+            amount } = this.state
         const cardDetails = {
             cvc: cvc,
             expiry: expiry,
             focus: focus,
             name: name,
-            number: number
+            number: number,
+            amount: amount
         }
 
 
@@ -122,18 +101,18 @@ class DonateNowCard extends Component {
                 {/* Card dynamic Content */}
                 <CardContent>
                     {this.state.StepCount == 0 &&
-                        <AmountValueDetail />
+                        <AmountValueDetail stepCount={this.state.StepCount} handleNext={this.handleNext} cardDetails={cardDetails} handleInputChange={this.handleInputChange} handleInputFocus={this.handleInputFocus} />
                     }
                     {this.state.StepCount == 1 &&
-                        <PaymentForm cardDetails={cardDetails} handleInputChange={this.handleInputChange} handleInputFocus={this.handleInputFocus} />
+                        <PaymentForm stepCount={this.state.StepCount} handleBack={this.handleBack} handleNext={this.handleNext} cardDetails={cardDetails} handleInputChange={this.handleInputChange} handleInputFocus={this.handleInputFocus} />
                     }
                     {this.state.StepCount == 2 &&
-                        <ConfirmPayment cardDetails={cardDetails}></ConfirmPayment>
+                        <ConfirmPayment stepCount={this.state.StepCount} handleBack={this.handleBack} cardDetails={cardDetails}></ConfirmPayment>
                     }
                 </CardContent>
 
 
-                {/* Stepper Buttons */}
+                {/* Stepper Buttons
                 <CardActions>
                     <div>
                         {this.state.StepCount === 2 ? (
@@ -156,7 +135,7 @@ class DonateNowCard extends Component {
                                 </div>
                             )}
                     </div>
-                </CardActions>
+                </CardActions> */}
             </Card >
 
         );

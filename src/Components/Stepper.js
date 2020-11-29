@@ -20,21 +20,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-    return ['Confirm Information', 'Add Payment Information', 'Confirm Payment Details'];
+    return ['Enter Donation Amount', 'Add Payment Information', 'Confirm Payment Details'];
 }
 
-function getStepContent(stepIndex) {
-    switch (stepIndex) {
-        case 0:
-            return 'Confirm Information';
-        case 1:
-            return 'Add Payment Information';
-        case 2:
-            return 'Confirm Payment';
-        default:
-            return 'Unknown stepIndex';
-    }
-}
+
 
 export default function HorizontalLabelPositionBelowStepper({ stepCount }) {
     const classes = useStyles();
