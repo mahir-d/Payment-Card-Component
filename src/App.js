@@ -6,9 +6,10 @@ function App() {
     return (
         <div className="App">
             <Container>
-                <Grid Container xs={12}>
-                    <br></br>
-                    <DonateNowCard></DonateNowCard>
+                <Grid container >
+                    <Grid item xs={12}>
+                        <DonateNowCard></DonateNowCard>
+                    </Grid>
                 </Grid>
             </Container>
 

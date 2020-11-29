@@ -20,13 +20,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-    return ['Select Amount To Donate', 'Add Payment Information', 'Confirm Payment'];
+    return ['Confirm Information', 'Add Payment Information', 'Confirm Payment Details'];
 }
 
 function getStepContent(stepIndex) {
     switch (stepIndex) {
         case 0:
-            return 'Select Amount To Donate';
+            return 'Confirm Information';
         case 1:
             return 'Add Payment Information';
         case 2:

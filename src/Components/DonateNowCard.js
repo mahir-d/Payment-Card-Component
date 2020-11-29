@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
-import { FormGroup, FormControl, InputLabel, Input, InputAdornment } from '@material-ui/core';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import HorizontalLabelPositionBelowStepper from './Stepper'
 import './CardC.css'
+import AmountValueDetail from './AmountValueDetail';
+import ConfirmPayment from './ConfirmPayment';
+import PaymentForm from './AddPaymentInformation'
 
 
 
@@ -18,11 +18,13 @@ import './CardC.css'
 function getStepContent(stepIndex) {
     switch (stepIndex) {
         case 0:
-            return 'Select Amount To Donate';
+            return 'Confirm Information';
         case 1:
             return 'Add Payment Information';
         case 2:
             return 'Confirm Payment';
+        case 3:
+            return 'Success';
         default:
             return 'Unknown stepIndex';
     }
@@ -38,34 +40,71 @@ class DonateNowCard extends Component {
 
         this.state = {
             StepCount: 0,
-            amount: 0
+            cvc: '',
+            expiry: '',
+            focus: '',
+            name: '',
+            number: ''
+
+
         }
 
         this.handleNext = this.handleNext.bind(this);
         this.handleBack = this.handleBack.bind(this);
-        this.handleReset = this.handleReset.bind(this)
-        // this.handleAmountChange = this.handleAmountChange.bind(this)
+        this.handleReset = this.handleReset.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this)
+        this.handleInputFocus = this.handleInputFocus.bind(this);
+
+
 
     }
 
+    /**
+     * Handles Next button action
+     */
     handleNext() {
         this.setState({ StepCount: this.state.StepCount + 1 });
     };
-
+    /**
+     * Handles back button action
+     */
     handleBack() {
         this.setState({ StepCount: this.state.StepCount - 1 });
     };
-    s
+    /**
+    * Handles back reset action
+    */
     handleReset() {
         this.setState({ StepCount: 0 });
     };
-    // handleAmountChange(event) {
-    //     this.setState({ amount: event.target.value.amount })
-    // }
 
+    // Handle Field change
+    handleInputChange = (e) => {
+        const { name, value } = e.target;
+
+        this.setState({ [name]: value });
+    }
+    handleInputFocus = (e) => {
+        this.setState({ focus: e.target.name });
+    }
 
 
     render() {
+        const { cvc,
+            expiry,
+            focus,
+            name,
+            number } = this.state
+        const cardDetails = {
+            cvc: cvc,
+            expiry: expiry,
+            focus: focus,
+            name: name,
+            number: number
+        }
+
+
+
         return (
 
 
@@ -80,52 +119,29 @@ class DonateNowCard extends Component {
                 </CardContent>
 
 
+                {/* Card dynamic Content */}
                 <CardContent>
                     {this.state.StepCount == 0 &&
-                        <form>
-                            <Typography variant="h5">I want to Donate to xyz corportation</Typography>
-                            <FormControl>
-                                <InputLabel htmlFor="amount">Amount</InputLabel>
-                                <Input
-                                    required
-                                    id="amount"
-
-                                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                />
-                            </FormControl>
-                            <Typography variant="h5">To support Campaign xyz</Typography>
-                        </form>
+                        <AmountValueDetail />
                     }
                     {this.state.StepCount == 1 &&
-                        <div> <Typography>Enter Payment Details</Typography>
-                            <form>
-                                <FormGroup>
-                                    <FormControl>
-                                        <InputLabel>Card Number</InputLabel>
-                                        <Input placeHolder="Card Number"></Input>
-                                    </FormControl>
-                                </FormGroup>
-
-                            </form>
-                        </div>
+                        <PaymentForm cardDetails={cardDetails} handleInputChange={this.handleInputChange} handleInputFocus={this.handleInputFocus} />
                     }
                     {this.state.StepCount == 2 &&
-                        <div>
-                            <Typography>Are you sure you want to make the payment?</Typography>
-
-                            <Button variant="default" color="success">Make Payment</Button>
-                        </div>
+                        <ConfirmPayment cardDetails={cardDetails}></ConfirmPayment>
                     }
                 </CardContent>
 
 
+                {/* Stepper Buttons */}
                 <CardActions>
-
-
                     <div>
                         {this.state.StepCount === 2 ? (
                             <div>
                                 <Button onClick={this.handleReset}>Reset</Button>
+                                <Button
+                                    disabled={this.state.StepCount === 0}
+                                    onClick={this.handleBack}>Back</Button>
                             </div>
                         ) : (
                                 <div>
@@ -141,16 +157,7 @@ class DonateNowCard extends Component {
                             )}
                     </div>
                 </CardActions>
-
-
-
-
-
-
-
             </Card >
-
-
 
         );
     }
