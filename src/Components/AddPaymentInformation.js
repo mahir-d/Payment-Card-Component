@@ -37,12 +37,33 @@ export default class PaymentForm extends Component {
 
     //Card Expiry month Validation
     validateCardExpiry = (e) => {
+
         if (e.target.value.length !== 4 || e.target.value < 0 || isNaN(e.target.value)) {
             this.setState({ cardExpiryError: true })
         }
+        let valueStr = e.target.value;
+        let month = parseInt(valueStr.substring(0, 2));
+        let year = parseInt("20" + valueStr.substring(2, 4));
+        if (valueStr.substring(0, 2) < 1 || valueStr.substring(0, 2) > 12) {
+            this.setState({ cardExpiryError: true })
+        }
+        console.log(`month = ${month}`)
+        console.log(`year = ${year}`)
+        var today, someday;
+        today = new Date();
+        someday = new Date();
+
+        someday.setFullYear(year, month, 1);
+        console.log(`today ${today}`)
+        console.log(`someday ${someday}`)
+        if (someday <= today) {
+            this.setState({ cardExpiryError: true })
+        }
+
+
+
         else {
             this.setState({ cardExpiryError: false })
-
         }
         this.props.handleInputChange(e)
     }
