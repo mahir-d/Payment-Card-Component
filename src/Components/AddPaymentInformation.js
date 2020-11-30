@@ -23,6 +23,9 @@ export default class PaymentForm extends Component {
         this.validate = this.validate.bind(this)
     }
 
+    /**
+     * This function handles the next button disabled prop validation
+     */
     handleSubmit() {
         const { cardDetails } = this.props
         if (cardDetails.cvc.length !== 3 || cardDetails.cvc < 0 || isNaN(cardDetails.cvc)) {
@@ -66,7 +69,7 @@ export default class PaymentForm extends Component {
         }
     }
 
-    //CArd CVC number Validation
+    //Card CVC number Validation
     validateCardCVC = (e) => {
         if (e.target.value.length !== 3 || e.target.value < 0 || isNaN(e.target.value)) {
             this.setState({ cardCVCError: true })
@@ -134,7 +137,7 @@ export default class PaymentForm extends Component {
     }
 
     render() {
-        const { cardDetails, handleInputFocus, handleBack, handleNext } = this.props
+        const { cardDetails, handleInputFocus, handleBack } = this.props
         return (
             <div className='App'>
                 <Cards

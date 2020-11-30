@@ -47,7 +47,10 @@ export class AmountValueDetail extends Component {
 
                         <Grid container className='App-form'>
                             <Grid item xs={12}>
-                                <Typography variant="h5"> I want to give ___</Typography>
+                                <Box component="span" >
+                                    <Typography variant="h5"> I want to donate </Typography>
+                                    <Typography variant="h2"> Redcross foundation </Typography>
+                                </Box>
                             </Grid>
                         </Grid>
                         <Grid container className='App-form'>
@@ -69,7 +72,8 @@ export class AmountValueDetail extends Component {
                         </Grid>
                         <Grid container className='App-form'>
                             <Grid item xs={12}>
-                                <Typography variant="h5"> To support ____</Typography>
+                                <Typography variant="h5"> To support </Typography>
+                                <Typography variant="h2"> Covid-19 relief fund </Typography>
                             </Grid>
                         </Grid>
 
