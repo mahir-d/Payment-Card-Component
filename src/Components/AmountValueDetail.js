@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Typography, Grid, Box, Container, CardActions, Button } from '@material-ui/core';
-import { FormControl, InputLabel, FilledInput, InputAdornment } from '@material-ui/core'
+import { TextField, InputAdornment } from '@material-ui/core'
 import './CardC.css'
 export class AmountValueDetail extends Component {
 
@@ -10,6 +10,18 @@ export class AmountValueDetail extends Component {
 
         this.state = {
             cardError: false
+        }
+
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    handleSubmit() {
+        const { cardDetails } = this.props
+        if (cardDetails.amount.length == 0 || isNaN(cardDetails.amount) || cardDetails.amount < 0) {
+            this.setState({ cardError: true })
+        }
+        else {
+            this.props.handleNext()
         }
 
     }
@@ -40,21 +52,19 @@ export class AmountValueDetail extends Component {
                         </Grid>
                         <Grid container className='App-form'>
                             <Grid item xs={12}>
-                                <FormControl >
-                                    <InputLabel htmlFor="filled-adornment-amount">Amount</InputLabel>
-                                    <FilledInput
-                                        id="filled-adornment-amount"
-                                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                        error={this.state.cardError}
-                                        type='tel'
-                                        name='amount'
-                                        placeholder='Donation Amount'
-                                        value={this.props.cardDetails.amount}
-                                        onChange={this.validateAmount}
-                                        onFocus={this.props.handleInputFocus}
-                                        variant="outlined"
-                                    />
-                                </FormControl>
+                                <TextField
+                                    error={this.state.cardError}
+                                    InputProps={{
+                                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                                    }}
+                                    type='tel'
+                                    name='amount'
+                                    placeholder='Enter Donation Amount'
+                                    value={this.props.cardDetails.amount}
+                                    onChange={this.validateAmount}
+                                    onFocus={this.props.handleInputFocus}
+                                    variant="outlined"
+                                />
                             </Grid>
                         </Grid>
                         <Grid container className='App-form'>
@@ -71,7 +81,7 @@ export class AmountValueDetail extends Component {
                             <Grid item xs={2}>
                                 <Button
                                     disabled={this.state.cardError}
-                                    variant="contained" color="primary" onClick={handleNext}>
+                                    variant="contained" color="primary" onClick={this.handleSubmit}>
                                     Next
                                 </Button>
                             </Grid>
