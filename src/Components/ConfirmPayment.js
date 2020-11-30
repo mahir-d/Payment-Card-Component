@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 
 export class ConfirmPayment extends Component {
     render() {
-        const { cardDetails } = this.props
+        const { cardDetails, handleBack } = this.props
         return (
             <div>
                 <Container>
@@ -18,6 +18,12 @@ export class ConfirmPayment extends Component {
 
                     {/* Next Stepper Button */}
                     <Grid container justify='center'>
+                        <Grid item xs={2}>
+                            <Button
+                                variant="contained" color="primary" onClick={handleBack}>
+                                Back
+                                </Button>
+                        </Grid>
                         <Grid item xs={2}>
                             <Button
                                 variant="contained" color="primary">

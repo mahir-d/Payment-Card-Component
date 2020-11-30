@@ -19,9 +19,52 @@ export default class PaymentForm extends Component {
         this.validateCardName = this.validateCardName.bind(this)
         this.validateCardExpiry = this.validateCardExpiry.bind(this)
         this.validateCardCVC = this.validateCardCVC.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
         this.validate = this.validate.bind(this)
     }
 
+    handleSubmit() {
+        const { cardDetails } = this.props
+        if (cardDetails.cvc.length !== 3 || cardDetails.cvc < 0 || isNaN(cardDetails.cvc)) {
+            this.setState({ cardCVCError: true })
+
+        }
+        if (cardDetails.number.length !== 16 || cardDetails.number < 0 || isNaN(cardDetails.number)) {
+            this.setState({ cardError: true })
+
+        }
+        if (cardDetails.name.length < 2 || cardDetails.name.length > 26 || typeof (cardDetails.name) != 'string' || !this.validate(cardDetails.name)) {
+            this.setState({ cardNameError: true })
+
+        }
+
+        if (cardDetails.expiry.length !== 4 || cardDetails.expiry < 0 || isNaN(cardDetails.expiry)) {
+            this.setState({ cardExpiryError: true })
+
+        }
+        else {
+            let valueStr = cardDetails.expiry;
+            let month = parseInt(valueStr.substring(0, 2));
+            let year = parseInt("20" + valueStr.substring(2, 4));
+            if (valueStr.substring(0, 2) < 1 || valueStr.substring(0, 2) > 12) {
+                this.setState({ cardExpiryError: true })
+
+            }
+            var today, someday;
+            today = new Date();
+            someday = new Date();
+            someday.setFullYear(year, month, 1);
+            if (someday <= today) {
+                this.setState({ cardExpiryError: true })
+                return
+            }
+            else {
+                // add submit logic
+                this.props.handleNext()
+
+            }
+        }
+    }
 
     //CArd CVC number Validation
     validateCardCVC = (e) => {
@@ -47,21 +90,13 @@ export default class PaymentForm extends Component {
         if (valueStr.substring(0, 2) < 1 || valueStr.substring(0, 2) > 12) {
             this.setState({ cardExpiryError: true })
         }
-        console.log(`month = ${month}`)
-        console.log(`year = ${year}`)
         var today, someday;
         today = new Date();
         someday = new Date();
-
         someday.setFullYear(year, month, 1);
-        console.log(`today ${today}`)
-        console.log(`someday ${someday}`)
         if (someday <= today) {
             this.setState({ cardExpiryError: true })
         }
-
-
-
         else {
             this.setState({ cardExpiryError: false })
         }
@@ -183,7 +218,7 @@ export default class PaymentForm extends Component {
                             <Grid item xs={2}>
                                 <Button
                                     disabled={(this.state.cardError || this.state.cardNameError || this.state.cardExpiryError || this.state.cardCVCError)}
-                                    variant="contained" color="primary" onClick={handleNext}>
+                                    variant="contained" color="primary" onClick={this.handleSubmit}>
                                     Next
                                 </Button>
                             </Grid>
