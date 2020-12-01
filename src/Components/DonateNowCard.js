@@ -1,21 +1,30 @@
 import React, { Component } from 'react';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import HorizontalLabelPositionBelowStepper from './Stepper'
 import './CardC.css'
 import AmountValueDetail from './AmountValueDetail';
 import ConfirmPayment from './ConfirmPayment';
 import PaymentForm from './AddPaymentInformation'
+//Dialog
+import { Dialog, DialogContent, DialogTitle } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
+
+
+/**
+ * props to be imported: 
+ * organization name, Campaign name 
+ * Still needs to be added
+ * 
+ */
 class DonateNowCard extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
+            modalOpen: false,
             StepCount: 0,
             cvc: '',
             expiry: '',
@@ -32,9 +41,9 @@ class DonateNowCard extends Component {
         this.handleReset = this.handleReset.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleInputFocus = this.handleInputFocus.bind(this);
-
-
-
+        this.handleClickOpen = this.handleClickOpen.bind(this);
+        this.handleClickClose = this.handleClickClose.bind(this)
+        this.baseState = this.state
     }
 
     /**
@@ -49,11 +58,14 @@ class DonateNowCard extends Component {
     handleBack() {
         this.setState({ StepCount: this.state.StepCount - 1 });
     };
+
     /**
     * Handles back reset action
     */
     handleReset() {
-        this.setState({ StepCount: 0 });
+        // this.setState({ StepCount: 0 });
+        this.setState(this.baseState)
+
     };
 
     // Handle Field change
@@ -63,6 +75,14 @@ class DonateNowCard extends Component {
     }
     handleInputFocus = (e) => {
         this.setState({ focus: e.target.name });
+    }
+    // This funciton handles modal toggle status
+    handleClickOpen() {
+        this.setState({ modalOpen: !this.state.modalOpen });
+    }
+    //Handles Modal close toggle
+    handleClickClose() {
+        this.setState(this.baseState)
     }
 
 
@@ -86,57 +106,39 @@ class DonateNowCard extends Component {
 
         return (
 
+            //Dialog Component
+            <div>
+                <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+                    Donate Now
+            </Button>
 
-            // Main Card Component
-            <Card className="root" variant="outlined">
+                <Dialog onClose={this.handleClickClose} aria-labelledby="customized-dialog-title" open={this.state.modalOpen}>
 
-                <CardHeader title="Make A Donation"></CardHeader>
-                {/* Card stepper */}
-                <CardContent>
-                    <HorizontalLabelPositionBelowStepper stepCount={this.state.StepCount}></HorizontalLabelPositionBelowStepper>
-                    {/* {this.state.stepCount == 2 ? (<Typography>All steps completed</Typography>) : (<Typography >{getStepContent(this.state.StepCount)}</Typography>)} */}
-                </CardContent>
+                    <DialogTitle id="customized-dialog-title" onClose={this.handleClickClose}>
+                        Make a Donation
+                        <IconButton aria-label="close" onClick={this.handleClickClose}>
+                            <CloseIcon />
+                        </IconButton>
+                    </DialogTitle>
 
+                    <DialogContent dividers>
 
-                {/* Card dynamic Content */}
-                <CardContent>
-                    {this.state.StepCount == 0 &&
-                        <AmountValueDetail stepCount={this.state.StepCount} handleNext={this.handleNext} cardDetails={cardDetails} handleInputChange={this.handleInputChange} handleInputFocus={this.handleInputFocus} />
-                    }
-                    {this.state.StepCount == 1 &&
-                        <PaymentForm stepCount={this.state.StepCount} handleBack={this.handleBack} handleNext={this.handleNext} cardDetails={cardDetails} handleInputChange={this.handleInputChange} handleInputFocus={this.handleInputFocus} />
-                    }
-                    {this.state.StepCount == 2 &&
-                        <ConfirmPayment stepCount={this.state.StepCount} handleBack={this.handleBack} cardDetails={cardDetails}></ConfirmPayment>
-                    }
-                </CardContent>
+                        <HorizontalLabelPositionBelowStepper stepCount={this.state.StepCount}></HorizontalLabelPositionBelowStepper>
 
 
-                {/* Stepper Buttons
-                <CardActions>
-                    <div>
-                        {this.state.StepCount === 2 ? (
-                            <div>
-                                <Button onClick={this.handleReset}>Reset</Button>
-                                <Button
-                                    disabled={this.state.StepCount === 0}
-                                    onClick={this.handleBack}>Back</Button>
-                            </div>
-                        ) : (
-                                <div>
-                                    <div>
-                                        <Button
-                                            disabled={this.state.StepCount === 0}
-                                            onClick={this.handleBack}>Back</Button>
-                                        <Button variant="contained" color="primary" onClick={this.handleNext}>
-                                            {this.state.StepCount === 2 ? 'Finish' : 'Next'}
-                                        </Button>
-                                    </div>
-                                </div>
-                            )}
-                    </div>
-                </CardActions> */}
-            </Card >
+                        {this.state.StepCount == 0 &&
+                            <AmountValueDetail stepCount={this.state.StepCount} handleNext={this.handleNext} cardDetails={cardDetails} handleInputChange={this.handleInputChange} handleInputFocus={this.handleInputFocus} />
+                        }
+                        {this.state.StepCount == 1 &&
+                            <PaymentForm stepCount={this.state.StepCount} handleBack={this.handleBack} handleNext={this.handleNext} cardDetails={cardDetails} handleInputChange={this.handleInputChange} handleInputFocus={this.handleInputFocus} />
+                        }
+                        {this.state.StepCount == 2 &&
+                            <ConfirmPayment stepCount={this.state.StepCount} handleBack={this.handleBack} cardDetails={cardDetails}></ConfirmPayment>
+                        }
+                    </DialogContent>
+
+                </Dialog>
+            </div>
 
         );
     }
