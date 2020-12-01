@@ -156,12 +156,15 @@ export default class PaymentForm extends Component {
                                     error={this.state.cardError}
                                     type="tel"
                                     name="number"
+                                    label="Card Number"
                                     placeholder="Card Number"
                                     value={cardDetails.number}
                                     onChange={this.validateCardNumber}
                                     onFocus={handleInputFocus}
                                     variant="outlined"
-
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                 />
 
                             </Grid>
@@ -172,11 +175,15 @@ export default class PaymentForm extends Component {
                                     error={this.state.cardNameError}
                                     type='text'
                                     name='name'
+                                    label='Name of Card Holder'
                                     placeholder='Name'
                                     value={cardDetails.name}
                                     onChange={this.validateCardName}
                                     onFocus={handleInputFocus}
                                     variant="outlined"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
 
                                 />
                             </Grid>
@@ -188,10 +195,14 @@ export default class PaymentForm extends Component {
                                     type='text'
                                     name='expiry'
                                     placeholder='MMYY Expiry'
+                                    label='Expiry'
                                     value={cardDetails.expiry}
                                     onChange={this.validateCardExpiry}
                                     onFocus={handleInputFocus}
                                     variant="outlined"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                 />
                             </Grid>
                         </Grid>
@@ -202,10 +213,14 @@ export default class PaymentForm extends Component {
                                     type='tel'
                                     name='cvc'
                                     placeholder='CVC'
+                                    label='CVC'
                                     value={cardDetails.cvc}
                                     onChange={this.validateCardCVC}
                                     onFocus={handleInputFocus}
                                     variant="outlined"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                 />
                             </Grid>
                         </Grid>
